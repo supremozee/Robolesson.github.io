@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Cardlist from './Cardlist';
+import SearchBox from './SearchBox'
+import Scroll from './Scroll'
+// import { robots } from './5.1 robots.js'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      robots: [],
+      searchfield: ''
+    }
+    // this.onSearchChange = this.onSearchChange.bind(this)
+  }
+
+  onSearchChange = (e) => {
+    this.setState({ searchfield: e.target.value })
+  }
+  componentDidMount() {
+    fetch(`https://jsonplaceholder.typicode.com/users`)
+      .then(resp => resp.json())
+      .then(users => this.setState({ robots: users }))
+  }
+
+  render() {
+    const { robots, searchfield } = this.state
+    const filteredRobot = robots.filter((robot, i) => {
+      return robot.name.toLowerCase().includes(searchfield.toLowerCase())
+
+    })
+    return !robots.length ?
+      <h1>Loading</h1> :
+      (<div className='tc'>
+        <h1 className='f2'>Robolesson</h1>
+        <SearchBox searchChange={this.onSearchChange} />
+        <Scroll>
+          <Cardlist robot={filteredRobot} />
+        </Scroll>
+      </div>)
+  }
 }
-
 export default App;
