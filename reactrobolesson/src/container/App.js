@@ -1,7 +1,8 @@
 import React from 'react';
-import Cardlist from './Cardlist';
-import SearchBox from './SearchBox'
-import Scroll from './Scroll'
+import Cardlist from '../component/Cardlist';
+import SearchBox from '../component/SearchBox'
+import Scroll from '../component/Scroll'
+import Errorboundary from '../component/Errorboundary';
 // import { robots } from './5.1 robots.js'
 
 class App extends React.Component {
@@ -35,7 +36,9 @@ class App extends React.Component {
         <h1 className='f2'>Robolesson</h1>
         <SearchBox searchChange={this.onSearchChange} />
         <Scroll>
+          <Errorboundary>
           <Cardlist robot={filteredRobot} />
+          </Errorboundary>
         </Scroll>
       </div>)
   }
